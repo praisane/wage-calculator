@@ -52,17 +52,17 @@ class WageParserTest(unittest.TestCase):
             normalize_time("25:00")
 
     def test_calculate_hours(self):
-        self.assertEquals(calculate_hours(8, 16), (8, 0, 0))
-        self.assertEquals(calculate_hours(12, 16.5), (4.5, 0, 0))
-        self.assertEquals(calculate_hours(14, 20), (6, 2, 0))
-        self.assertEquals(calculate_hours(16, 0), (8, 6, 0))
+        self.assertEqual(calculate_hours(8, 16), (8, 0, 0))
+        self.assertEqual(calculate_hours(12, 16.5), (4.5, 0, 0))
+        self.assertEqual(calculate_hours(14, 20), (6, 2, 0))
+        self.assertEqual(calculate_hours(16, 0), (8, 6, 0))
 
         # overtime 
-        self.assertEquals(calculate_hours(8, 18), (10, 0, 2))
+        self.assertEqual(calculate_hours(8, 18), (10, 0, 2))
 
         # evening hours should be zero since overtime takes precedence:
-        self.assertEquals(calculate_hours(16, 8), (16, 0, 8))
-        self.assertEquals(calculate_hours(23, 12), (13, 0, 5))
+        self.assertEqual(calculate_hours(16, 8), (16, 0, 8))
+        self.assertEqual(calculate_hours(23, 12), (13, 0, 5))
 
     def test_normalize_hours(self):
         hours = [Hours("1.10.2016", "8:00", "10:00"),
@@ -106,13 +106,14 @@ class WageParserTest(unittest.TestCase):
         self.__assertHours(normalized[1], "2.10.2016", 4)
 
     def test_to_dollars(self):
-        self.assertEquals(Hours("1.10.2016", "8:00", "16:00").to_dollars(), 30)
-        self.assertEquals(Hours("1.10.2016", "8:00", "12:00").to_dollars(), 15)
+        self.assertEqual(Hours("1.10.2016", "8:00", "16:00").to_dollars(), 30)
+        self.assertEqual(Hours("1.10.2016", "8:00", "12:00").to_dollars(), 15)
 
-        self.assertEquals(Hours("1.10.2016", "12:00", "20:00").to_dollars(), 32.30)
-        self.assertEquals(Hours("1.10.2016", "18:00", "00:00").to_dollars(), 29.40)
+        self.assertEqual(Hours("1.10.2016", "12:00", "20:00").to_dollars(), 32.30)
+        self.assertEqual(Hours("1.10.2016", "18:00", "00:00").to_dollars(), 29.40)
 
-        self.assertEquals(Hours("1.10.2016", "08:00", "20:00").to_dollars(), 50.625)
-        self.assertEquals(Hours("1.10.2016", "08:00", "00:00").to_dollars(), 80.625)
+        self.assertEqual(Hours("1.10.2016", "08:00", "20:00").to_dollars(), 50.625)
+        self.assertEqual(Hours("1.10.2016", "08:00", "00:00").to_dollars(), 80.625)
+
 if __name__ == "__main__":
     unittest.main()
