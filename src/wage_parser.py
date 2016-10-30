@@ -162,8 +162,6 @@ class WageParser(object):
         monthly_wages = []
 
         for person_id in sorted(self.persons.keys()):
-            for hours in normalize_hours(self.hours[person_id]):
-                print(person_id, hours.date, hours.hours, hours.evening_hours, hours.overtime_hours, hours.to_dollars())
             daily_wages = map(lambda hours: hours.to_dollars(), normalize_hours(self.hours[person_id]))
 
             monthly_wage = 0.0
