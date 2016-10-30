@@ -58,6 +58,8 @@ def normalize_hours(raw_hours):
     normalized = []
 
     current_date = None
+    # This sorting will actually go a little wrong thanks to the dates being strings, but it is "good enough" for our purposes
+    # as entries for the same date will be adjacent anyway.
     for hours in sorted(raw_hours, key=attrgetter("date")):
         if hours.date != current_date:
             normalized.append(hours)
