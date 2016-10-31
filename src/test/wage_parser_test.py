@@ -4,7 +4,8 @@ Created on Oct 30, 2016
 @author: petteri.raisanen
 '''
 import unittest
-from wage_parser import normalize_time, calculate_hours, Hours, normalize_hours
+from wage_parser import normalize_time, calculate_hours, Hours, normalize_hours,\
+    calculate_overtime_pay
 
 
 class WageParserTest(unittest.TestCase):
@@ -114,6 +115,15 @@ class WageParserTest(unittest.TestCase):
 
         self.assertEqual(Hours("1.10.2016", "08:00", "20:00").to_dollars(), 50.625)
         self.assertEqual(Hours("1.10.2016", "08:00", "00:00").to_dollars(), 80.625)
+
+    def test_calculate_overtime_pay(self):
+        # the return values are in cents:
+        self.assertEquals(calculate_overtime_pay(0), 0)
+        self.assertEquals(calculate_overtime_pay(1), 375 * 0.25)
+        self.assertEquals(calculate_overtime_pay(2), 375 * 0.25 * 2)
+        self.assertEquals(calculate_overtime_pay(3), (375 * 0.25 * 2) + (375 * 0.50))
+        self.assertEquals(calculate_overtime_pay(5), (375 * 0.25 * 2) + (375 * 0.50 * 2) + (375 * 1))
+        self.assertEquals(calculate_overtime_pay(10), (375 * 0.25 * 2) + (375 * 0.50 * 2) + (375 * 1 * 6))
 
 if __name__ == "__main__":
     unittest.main()

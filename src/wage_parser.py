@@ -72,10 +72,10 @@ def normalize_hours(raw_hours):
 
 def calculate_overtime_pay(overtime_hours):
     pay = overtime_hours * 0.25 * BASE_HOURLY_RATE_CENTS
-    if (pay > 2):
+    if (overtime_hours > 2):
         pay += (overtime_hours - 2) * 0.25 * BASE_HOURLY_RATE_CENTS
 
-    if (pay > 4):
+    if (overtime_hours > 4):
         pay += (overtime_hours - 4) * 0.50 * BASE_HOURLY_RATE_CENTS
 
     return pay
