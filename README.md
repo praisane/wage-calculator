@@ -22,6 +22,8 @@ To run the included unittests, use the `run_tests` script:
 
 `./run_tests.sh`
 
+To get some more statistics about the monthly hours, use the `-s/--statistics` flag.
+
 
 ## Limitations and known issues
 

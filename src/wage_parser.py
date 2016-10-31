@@ -105,11 +105,13 @@ class Hours(object):
             self.evening_hours = 0
 
 class MonthlyWage(object):
-    def __init__(self, person_id, name, wage):
+    def __init__(self, person_id, name, wage, hours, evening_hours, overtime_hours):
         self.person_id = person_id
         self.name = name
         self.wage = wage
-
+        self.hours = hours
+        self.evening_hours = evening_hours
+        self.overtime_hours = overtime_hours
 
 def parse_month(date_str):
     # 12.3.2014
@@ -164,13 +166,23 @@ class WageParser(object):
         monthly_wages = []
 
         for person_id in sorted(self.persons.keys()):
-            daily_wages = map(lambda hours: hours.to_dollars(), normalize_hours(self.hours[person_id]))
+            normalized_hours = normalize_hours(self.hours[person_id])
+
+            daily_wages = map(lambda hours: hours.to_dollars(), normalized_hours)
+            daily_hours = map(lambda hours: (hours.hours, hours.evening_hours, hours.overtime_hours), normalized_hours)
 
             monthly_wage = 0.0
             for daily_wage in daily_wages:
                 monthly_wage += daily_wage
 
-            monthly_wages.append(MonthlyWage(person_id, self.persons[person_id], monthly_wage))
+            # python 3 strongly advises against using the reduce built-in so we'll loop here.
+            (monthly_hours, monthly_evening_hours, monthly_overtime_hours) = (0, 0, 0)
+            for daily_hour in daily_hours:
+                monthly_hours += daily_hour[0]
+                monthly_evening_hours += daily_hour[1]
+                monthly_overtime_hours += daily_hour[2]
+
+            monthly_wages.append(MonthlyWage(person_id, self.persons[person_id], monthly_wage, monthly_hours, monthly_evening_hours, monthly_overtime_hours))
 
         return monthly_wages
 

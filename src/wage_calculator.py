@@ -10,8 +10,7 @@ def main(argv=None):
     try:
         # Setup argument parser
         parser = ArgumentParser(formatter_class=RawDescriptionHelpFormatter)
-#         parser.add_argument("-r", "--recursive", dest="recurse", action="store_true", help="recurse into subfolders [default: %(default)s]")
-#         parser.add_argument("-v", "--verbose", dest="verbose", action="count", help="set verbosity level [default: %(default)s]")
+        parser.add_argument("-s", "--statistics", dest="print_stats", action="store_true", default=False , help="print out more detailed statistics")
         parser.add_argument(dest="in_file", help="the input CSV file")
 
         args = parser.parse_args()
@@ -22,6 +21,8 @@ def main(argv=None):
         print("Monthly wages for %s/%s\n" % wage_parser.month())
         for wage in wages:
             print("%s, %s, $%d.00" % (wage.person_id, wage.name, wage.wage))
+            if args.print_stats:
+                print("\tTotal hours worked %d, evening hours %d, overtime hours %d" % (wage.hours, wage.evening_hours, wage.overtime_hours))
 
     except KeyboardInterrupt:
         ### handle keyboard interrupt ###
